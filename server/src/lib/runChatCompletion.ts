@@ -6,6 +6,7 @@ import { recordRequest, recordTokens, setCooldown, setKeyCooldown, classifyError
 import { getDb } from '../db/index.js';
 import { clientCtx } from './clientAuth.js';
 import { computeCostMicro } from './pricing.js';
+import { redactSecrets } from './redact.js';
 
 // MAX_RETRIES reduced 20 -> 8 (May 2026). Production analytics showed
 // average cascade depth ~5 attempts before success; 20 just buys log spam
@@ -509,6 +510,9 @@ export function logRequest(opts: LogRequestOpts) {
   try {
     const db = getDb();
     const endUserId = opts.endUserId ?? clientCtx.getStore()?.endUserId ?? null;
+    // Redact any credential / PII an upstream error may have echoed back before
+    // it is persisted to analytics (single chokepoint for all logged errors).
+    const safeError = redactSecrets(opts.error);
     const costMicro = opts.costMicro ?? computeCostMicro({
       platform: opts.platform,
       modelId: opts.modelId,
@@ -530,7 +534,7 @@ export function logRequest(opts: LogRequestOpts) {
       opts.inputTokens,
       opts.outputTokens,
       opts.latencyMs,
-      opts.error,
+      safeError,
       opts.errorClass ?? null,
       opts.upstreamStatus ?? extractUpstreamStatus(opts.error),
       opts.attempts ?? 0,
