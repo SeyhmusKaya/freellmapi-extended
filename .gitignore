@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+**/dist/
+
+# Local env / secrets — NEVER commit
+.env
+.env.local
+.env.*.local
+.env.bak*
+.myllm-deploy.secret
+
+# Server runtime data (sqlite DB w/ encrypted keys, daily probe JSON, logs)
+server/data/
+*.db
+*.db-wal
+*.db-shm
+model-status.json
+probe.log
+
+# Backups / tarballs
+*.bak
+*.bak.*
+*.authbak
+*.tgz
+*.tar.gz
+
+# Logs
+*.log
+logs/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# Personal deployment scripts kept local
+deploy-pi.sh
+update-hermes.sh

@@ -1,0 +1,20 @@
+{
+  "name": "freellmapi-extended",
+  "private": true,
+  "workspaces": [
+    "shared",
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev -w server\" \"npm run dev -w client\"",
+    "test": "npm run test -w server && npm run test -w client",
+    "build": "npm run build -w server && npm run build -w client",
+    "build:server": "npm run build -w server"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "description": "Free OpenAI-compatible LLM gateway & aggregator — one endpoint in front of 150+ free models across 15+ providers, with health-aware routing and automatic fallback. Self-hosted.",
+  "license": "MIT"
+}
