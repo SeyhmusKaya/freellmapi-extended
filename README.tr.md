@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="repo-assets/hero.png" alt="FreeLLMAPI-Extended — free OpenAI-compatible LLM gateway with 150+ models and auto fallback" width="100%" />
+
 # FreeLLMAPI-Extended
 
 ### 150'den fazla ücretsiz LLM'in önünde tek bir OpenAI uyumlu uç nokta — sağlık duyarlı yönlendirme, otomatik yedeğe geçiş ve eksiksiz bir analiz panosu ile.

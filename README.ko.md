@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="repo-assets/hero.png" alt="FreeLLMAPI-Extended — free OpenAI-compatible LLM gateway with 150+ models and auto fallback" width="100%" />
+
 # FreeLLMAPI-Extended
 
 ### 150개 이상의 무료 LLM 앞단에 놓인 단일 OpenAI 호환 엔드포인트 — 상태 인식 라우팅, 자동 폴백, 그리고 완전한 분석 대시보드를 갖춘.

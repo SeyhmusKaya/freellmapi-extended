@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="repo-assets/hero.png" alt="FreeLLMAPI-Extended — free OpenAI-compatible LLM gateway with 150+ models and auto fallback" width="100%" />
+
 # FreeLLMAPI-Extended
 
 ### 一个 OpenAI 兼容端点，统一接入 150+ 免费大语言模型 —— 具备健康感知路由、自动故障转移与完整的分析仪表盘。
