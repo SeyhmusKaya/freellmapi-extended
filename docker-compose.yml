@@ -1,0 +1,16 @@
+services:
+  freellmapi:
+    build: .
+    image: freellmapi-extended:latest
+    container_name: freellmapi-extended
+    ports:
+      - "3001:3001"
+    environment:
+      # Required — generate with:
+      #   node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY:?set ENCRYPTION_KEY in your .env}
+      PORT: "3001"
+    volumes:
+      # Persist the SQLite database + encrypted provider keys across restarts.
+      - ./data:/app/server/data
+    restart: unless-stopped

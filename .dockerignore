@@ -1,0 +1,15 @@
+**/node_modules
+**/dist
+.git
+.github
+server/data
+*.db
+*.db-wal
+*.db-shm
+repo-assets
+docs
+*.md
+.env
+.env.*
+Dockerfile
+.dockerignore

@@ -87,6 +87,27 @@ flowchart LR
 
 ## 🚀 Quick Start
 
+### 🐳 Docker (recommended)
+
+```bash
+# 1. Set an encryption key
+echo "ENCRYPTION_KEY=$(node -e "console.log(require('crypto').randomBytes(32).toString('hex'))")" > .env
+
+# 2. Run
+docker compose up -d
+```
+
+The gateway is live at `http://localhost:3001`. Or pull the prebuilt image from GHCR:
+
+```bash
+docker run -d -p 3001:3001 \
+  -e ENCRYPTION_KEY=$(openssl rand -hex 32) \
+  -v "$(pwd)/data:/app/server/data" \
+  ghcr.io/seyhmuskaya/freellmapi-extended:latest
+```
+
+### 🛠️ From source
+
 ```bash
 # 1. Clone
 git clone https://github.com/SeyhmusKaya/freellmapi-extended.git
