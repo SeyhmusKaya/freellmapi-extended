@@ -188,8 +188,13 @@ FreeLLMAPI-Extended가 단순한 프록시와 다른 점:
 - **Fallback** — 라우팅 체인을 보고 순서를 재배치하거나, 실측 품질 기준으로 정렬.
 - **Playground** — 브라우저에서 직접 모델을 테스트.
 
-<!-- Screenshots: place dashboard images in /repo-assets and reference them here. -->
-<!-- ![Analytics dashboard](repo-assets/analytics.png) -->
+<p align="center">
+  <img src="repo-assets/analytics.png" alt="FreeLLMAPI-Extended analytics dashboard — request volume, success rate, latency, cost, cascade retries" width="49%" />
+  <img src="repo-assets/playground.png" alt="FreeLLMAPI-Extended playground — chat, image, image edit, TTS, STT, embedding, rerank multimodal UI" width="49%" />
+</p>
+<p align="center">
+  <img src="repo-assets/fallback.png" alt="FreeLLMAPI-Extended fallback chain — health-aware routing and automatic failover across 150+ free models" width="92%" />
+</p>
 
 ---
 

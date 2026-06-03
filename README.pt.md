@@ -188,8 +188,13 @@ Um painel React integrado para chaves, roteamento e análise:
 - **Fallback** — visualize e reordene a cadeia de roteamento, ou ordene pela qualidade medida.
 - **Playground** — teste modelos diretamente do navegador.
 
-<!-- Screenshots: place dashboard images in /repo-assets and reference them here. -->
-<!-- ![Analytics dashboard](repo-assets/analytics.png) -->
+<p align="center">
+  <img src="repo-assets/analytics.png" alt="FreeLLMAPI-Extended analytics dashboard — request volume, success rate, latency, cost, cascade retries" width="49%" />
+  <img src="repo-assets/playground.png" alt="FreeLLMAPI-Extended playground — chat, image, image edit, TTS, STT, embedding, rerank multimodal UI" width="49%" />
+</p>
+<p align="center">
+  <img src="repo-assets/fallback.png" alt="FreeLLMAPI-Extended fallback chain — health-aware routing and automatic failover across 150+ free models" width="92%" />
+</p>
 
 ---
 
