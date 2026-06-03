@@ -17,13 +17,41 @@ import { BaseProvider, type CompletionOptions, type ResponseFormat, type EmbedOp
  * forward the schema when the caller provided one; bare `json_object` just
  * flips the MIME type.
  */
+// Gemini's `responseSchema` is a restricted OpenAPI 3.0 subset. Standard JSON
+// Schema keywords it does NOT accept make the whole request 400. We recursively
+// drop them so a normal OpenAI json_schema (which often carries
+// additionalProperties / $ref / allOf / etc.) routes to Gemini cleanly instead
+// of failing and cascading. The constraint is slightly looser (composition
+// keywords are removed) but the request succeeds.
+const GEMINI_UNSUPPORTED_SCHEMA_KEYS = new Set([
+  'additionalProperties', 'unevaluatedProperties', 'uniqueItems',
+  '$schema', '$id', '$ref', '$defs', 'definitions', '$comment',
+  'allOf', 'oneOf', 'not', 'if', 'then', 'else',
+  'const', 'examples', 'readOnly', 'writeOnly', 'deprecated',
+  'prefixItems', 'contains', 'propertyNames', 'patternProperties',
+  'multipleOf', 'dependencies', 'dependentRequired', 'dependentSchemas',
+]);
+
+export function stripGeminiSchema(node: unknown): unknown {
+  if (Array.isArray(node)) return node.map(stripGeminiSchema);
+  if (node && typeof node === 'object') {
+    const out: Record<string, unknown> = {};
+    for (const [k, v] of Object.entries(node as Record<string, unknown>)) {
+      if (GEMINI_UNSUPPORTED_SCHEMA_KEYS.has(k)) continue;
+      out[k] = stripGeminiSchema(v);
+    }
+    return out;
+  }
+  return node;
+}
+
 function applyResponseFormat(generationConfig: Record<string, unknown>, rf?: ResponseFormat): void {
   if (!rf) return;
   if (rf.type === 'json_object') {
     generationConfig.responseMimeType = 'application/json';
   } else if (rf.type === 'json_schema') {
     generationConfig.responseMimeType = 'application/json';
-    generationConfig.responseSchema = rf.json_schema.schema;
+    generationConfig.responseSchema = stripGeminiSchema(rf.json_schema.schema);
   }
 }
 
