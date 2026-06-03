@@ -235,9 +235,19 @@ Sağlık duyarlı yeniden sıralama, sınıflandırılmış uyarlanabilir beklem
 
 ## 🙏 Teşekkürler ve Atıf
 
-FreeLLMAPI-Extended, [@tashfeenahmed](https://github.com/tashfeenahmed) tarafından geliştirilen mükemmel açık kaynaklı çalışma **[tashfeenahmed/freellmapi](https://github.com/tashfeenahmed/freellmapi)** **üzerine kurulmuş ve ondan ilham almıştır** — özgün temel için çok teşekkürler. Bu proje, onu ek modaliteler, sağlık duyarlı yönlendirme, toplu işleme, son kullanıcı başına faturalandırma, anahtarsız sağlayıcılar ve yeniden tasarlanmış bir analiz panosu ile genişletir.
+FreeLLMAPI-Extended, [@tashfeenahmed](https://github.com/tashfeenahmed) tarafından geliştirilen mükemmel açık kaynaklı çalışma **[tashfeenahmed/freellmapi](https://github.com/tashfeenahmed/freellmapi)** **üzerine kurulmuş ve ondan ilham almıştır** — bunu mümkün kılan özgün temel için çok teşekkürler.
 
-**MIT** lisansı altındadır (yukarı akışla aynı) — bkz. [LICENSE](LICENSE).
+### FreeLLMAPI-Extended'in upstream üzerine eklediği özellikler
+
+- **6 modalite** — metin sohbetinin ötesinde görsel (vision), görsel üretme/düzenleme (inpaint/outpaint), embedding, ses (STT/TTS) ve yeniden sıralama (rerank).
+- **Sağlık duyarlı yönlendirme** — fallback zinciri, her modelin *ölçülen* 7 günlük başarı oranı + gecikmesiyle yeniden sıralanır; sabit özelliklerle değil.
+- **Batch API** — OpenAI tarzı asenkron toplu işleme; HMAC imzalı webhook, retry ve NDJSON sonuç.
+- **Son kullanıcı bazında harcama** — maliyeti kendi son kullanıcılarına atfet, günlük/haftalık/aylık limit uygula.
+- **Anahtarsız sağlayıcılar** (Pollinations, Kilo) — anahtar gerektirmeyen taşma kapasitesi.
+- **Model alias'ları** — belirli iş yükleri için sabit, sırası bozulmaz yönlendirme zincirleri.
+- Saklanan hatalarda **sır/PII redaksiyonu**, **istek bazlı analitik** (gerçek başarı vs cascade retry) ve yeniden tasarlanmış panel.
+
+**MIT** lisansı altındadır (upstream ile aynı) — bkz. [LICENSE](LICENSE).
 
 ---
 

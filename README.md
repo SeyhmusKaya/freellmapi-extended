@@ -278,7 +278,17 @@ Health-aware re-ranking, classified adaptive cooldowns, per-request cascade, key
 ## 🙏 Credits & Attribution
 
 FreeLLMAPI-Extended is built **on and inspired by** the excellent open-source work of
-**[tashfeenahmed/freellmapi](https://github.com/tashfeenahmed/freellmapi)** by [@tashfeenahmed](https://github.com/tashfeenahmed) — huge thanks for the original foundation. This project extends it with additional modalities, health-aware routing, batch processing, per-end-user billing, keyless providers, and a redesigned analytics dashboard.
+**[tashfeenahmed/freellmapi](https://github.com/tashfeenahmed/freellmapi)** by [@tashfeenahmed](https://github.com/tashfeenahmed) — huge thanks for the original foundation that made this possible.
+
+### What FreeLLMAPI-Extended adds on top of upstream
+
+- **6 modalities** — vision, image generation/editing (inpaint/outpaint), embeddings, audio (STT/TTS), and reranking, beyond text chat.
+- **Health-aware routing** — the fallback chain is re-ranked from each model's *measured* 7-day success rate + latency, not just static specs.
+- **Batch API** — OpenAI-style async batch processing with HMAC-signed webhooks, retries, and NDJSON results.
+- **Per-end-user spend** — attribute cost to your own end users and enforce daily/weekly/monthly limits.
+- **Keyless providers** (Pollinations, Kilo) — zero-key overflow capacity.
+- **Model aliases** — fixed, reorder-proof routing chains for specific workloads.
+- **Secret/PII redaction** on stored errors, **request-level analytics** (real success vs cascade retries), and a redesigned dashboard.
 
 Licensed under **MIT** (same as upstream) — see [LICENSE](LICENSE).
 
