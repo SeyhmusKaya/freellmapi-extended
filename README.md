@@ -8,6 +8,8 @@
 
 **Self-hosted, open-source LLM gateway & aggregator.** Route chat, vision, image generation, embeddings, audio (STT/TTS), and reranking to 15+ free providers through a single OpenAI-compatible API — with intelligent failover so your app never goes down when one provider rate-limits.
 
+[![CI](https://github.com/SeyhmusKaya/freellmapi-extended/actions/workflows/ci.yml/badge.svg)](https://github.com/SeyhmusKaya/freellmapi-extended/actions/workflows/ci.yml)
+[![Docker](https://github.com/SeyhmusKaya/freellmapi-extended/actions/workflows/docker.yml/badge.svg)](https://github.com/SeyhmusKaya/freellmapi-extended/pkgs/container/freellmapi-extended)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Node.js-3178C6.svg)](https://www.typescriptlang.org/)
 [![OpenAI Compatible](https://img.shields.io/badge/API-OpenAI--Compatible-412991.svg)](#-api-usage)
@@ -229,6 +231,25 @@ A built-in React dashboard for keys, routing, and analytics:
 | [`docs/VISION-PLAN.md`](docs/VISION-PLAN.md) | Vision / multimodal |
 | [`docs/STRUCTURED-OUTPUT-PLAN.md`](docs/STRUCTURED-OUTPUT-PLAN.md) | JSON mode & structured output |
 | [`mcp/README.md`](mcp/README.md) | Model Context Protocol server |
+
+---
+
+## ⚖️ How it compares
+
+| | **FreeLLMAPI-Extended** | LiteLLM | OpenRouter | one-api |
+|---|:---:|:---:|:---:|:---:|
+| Self-hosted & open-source | ✅ | ✅ | ❌ (hosted) | ✅ |
+| Optimized for **free** tiers | ✅ | ➖ | ➖ (paid credits) | ➖ |
+| Health-aware routing (measured) | ✅ | ➖ | ✅ | ➖ |
+| Automatic fallback cascade | ✅ | ✅ | ✅ | ✅ |
+| Keyless providers (no API key) | ✅ | ❌ | ❌ | ❌ |
+| Vision + image + audio + rerank | ✅ | ➖ | ➖ | ➖ |
+| Built-in analytics dashboard | ✅ | ➖ | ✅ | ✅ |
+| Per-end-user spend limits | ✅ | ✅ | ➖ | ✅ |
+| Batch API + webhooks | ✅ | ➖ | ❌ | ❌ |
+| Zero external DB (SQLite) | ✅ | ➖ | n/a | ❌ (MySQL) |
+
+> Looking for a **self-hosted LiteLLM / OpenRouter alternative** focused on free models with a dashboard? That's exactly what FreeLLMAPI-Extended is.
 
 ---
 

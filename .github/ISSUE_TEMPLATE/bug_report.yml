@@ -1,0 +1,37 @@
+name: 🐛 Bug report
+description: Something isn't working as expected
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: A clear description of the bug, plus what you expected.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Send a request to `/v1/...`
+        2. ...
+    validations:
+      required: true
+  - type: input
+    id: provider
+    attributes:
+      label: Provider / model (if relevant)
+      placeholder: groq / llama-3.3-70b, or "auto-route"
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs / response
+      description: Paste the `X-Routed-Via` header and any error body. **Redact API keys.**
+      render: shell
+  - type: input
+    id: version
+    attributes:
+      label: Version / commit & deployment (Docker / source)
+    validations:
+      required: true

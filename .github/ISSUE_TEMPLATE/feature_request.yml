@@ -1,0 +1,19 @@
+name: ✨ Feature request
+description: Suggest an idea, a new free provider, or an improvement
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+  - type: input
+    id: provider
+    attributes:
+      label: New provider? (name + docs URL + free-tier limits)
+      placeholder: e.g. Example AI — https://… — 60 RPM, 1M tokens/day free
