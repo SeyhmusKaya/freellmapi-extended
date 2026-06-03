@@ -392,23 +392,44 @@ export function resolveCodingChain(): number[] {
  *   5. google gemini-2.5-flash-lite — fast 1M-ctx final rung.
  *
  * Resolved by (platform, model_id) because llama-3.2-90b-vision exists on both
- * github (RPM 10) and nvidia (RPM 40) — we want nvidia. All five are
- * vision_capable, json-mode-capable and ≥128K context (long prompts fit).
+ * github (RPM 10) and nvidia (RPM 40) — we want nvidia. All are vision_capable,
+ * json-mode-capable and ≥128K context (long prompts fit).
+ *
+ * VISION-AWARE (Jun 2026): when the turn carries an IMAGE, the chain is
+ * reordered. groq + cloudflare llama-4-scout reject real phone screenshots
+ * ("400 invalid image data" — they can't decode HEIC/WebP or a mislabelled
+ * MIME, while gemini/llama-vision accept the same bytes), so for image turns we
+ * lead with the lenient, HEIC-native gemini-2.5-flash and the llama-3.2 vision
+ * models, and push the scouts to the back. Text turns keep groq-scout-first for
+ * speed. This removes the wasted groq-400 + nvidia-timeout cascade on every
+ * screenshot.
  *
  * NOTE: unlike `coding`, this alias does NOT restrict platforms — when the
  * prefix saturates the cascade falls through to the full healthy catalog, so a
  * request never 429s for lack of a chain model. For image requests the router's
  * vision filter still keeps every fallback vision-capable.
  */
-export function resolveAskpusulasiChain(): number[] {
+export function resolveAskpusulasiChain(requireVision = false): number[] {
   const db = getDb();
-  const pairs: Array<[string, string]> = [
+  // Text turns: speed-first (groq scout). Image turns: format-lenient vision
+  // models first (gemini handles HEIC/WebP natively; llama-3.2-vision proven on
+  // real screenshots), scouts last (they 400 on undecodable formats).
+  const textPairs: Array<[string, string]> = [
     ['groq', 'meta-llama/llama-4-scout-17b-16e-instruct'],
     ['cloudflare', '@cf/meta/llama-4-scout-17b-16e-instruct'],
     ['nvidia', 'meta/llama-3.2-90b-vision-instruct'],
     ['google', 'gemini-2.5-flash'],
     ['google', 'gemini-2.5-flash-lite'],
   ];
+  const visionPairs: Array<[string, string]> = [
+    ['google', 'gemini-2.5-flash'],
+    ['github', 'meta/llama-3.2-11b-vision-instruct'],
+    ['nvidia', 'meta/llama-3.2-90b-vision-instruct'],
+    ['google', 'gemini-2.5-flash-lite'],
+    ['cloudflare', '@cf/meta/llama-4-scout-17b-16e-instruct'],
+    ['groq', 'meta-llama/llama-4-scout-17b-16e-instruct'],
+  ];
+  const pairs = requireVision ? visionPairs : textPairs;
   const out: number[] = [];
   for (const [platform, modelId] of pairs) {
     const row = db.prepare('SELECT id FROM models WHERE platform = ? AND model_id = ? AND enabled = 1')
@@ -429,14 +450,14 @@ export interface ResolvedAlias {
  * falls back to normal pin / auto-route resolution. Centralises alias handling
  * so the sync and streaming proxy paths share one source of truth.
  */
-export function resolveAlias(requested: string | undefined): ResolvedAlias | null {
+export function resolveAlias(requested: string | undefined, requireVision = false): ResolvedAlias | null {
   if (!requested) return null;
   const a = requested.trim().toLowerCase();
   if (['coding', 'code'].includes(a)) {
     return { chain: resolveCodingChain(), restrictToPlatforms: CODING_PLATFORMS };
   }
   if (['askpusulasi', 'ask-pusulasi', 'relationship', 'iliski', 'ilişki'].includes(a)) {
-    return { chain: resolveAskpusulasiChain() };
+    return { chain: resolveAskpusulasiChain(requireVision) };
   }
   return null;
 }
@@ -580,7 +601,7 @@ export async function runChatCompletion(parsed: ChatCompletionRequest): Promise<
   // Fixed alias chains (`coding`, `askpusulasi`, ...) — a reorder-proof,
   // priority model list. coding stays inside NVIDIA+Cerebras; askpusulasi is a
   // vision-first fast chain that cascades to the full catalog. See resolveAlias.
-  const alias = resolveAlias(requestedModel);
+  const alias = resolveAlias(requestedModel, requireVision);
   const aliasChain = alias?.chain;
   const aliasPlatforms = alias?.restrictToPlatforms;
 

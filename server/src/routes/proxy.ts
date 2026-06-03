@@ -165,7 +165,7 @@ async function handleStreamingCompletion(
 
   // Fixed alias chains (`coding`, `askpusulasi`, ...) — must be handled here
   // too: streaming clients (Cline, the Aşk Pusulası chat UI, etc.) hit this path.
-  const alias = resolveAlias(data.model);
+  const alias = resolveAlias(data.model, requireVision);
   const aliasChain = alias?.chain;
   const aliasPlatforms = alias?.restrictToPlatforms;
 

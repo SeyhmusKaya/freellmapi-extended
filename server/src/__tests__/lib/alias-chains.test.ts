@@ -52,4 +52,29 @@ describe('alias chains', () => {
       expect(['groq', 'cloudflare', 'nvidia', 'google']).toContain(row.platform);
     }
   });
+
+  it('vision-aware: image turns reorder so a format-lenient vision model leads, not groq scout', () => {
+    const db = getDb();
+    const textLead = resolveAskpusulasiChain(false)[0];
+    const visionLead = resolveAskpusulasiChain(true)[0];
+    const lookup = (id: number) => db.prepare('SELECT platform, model_id FROM models WHERE id = ?').get(id) as
+      { platform: string; model_id: string } | undefined;
+    const tl = lookup(textLead);
+    const vl = lookup(visionLead);
+    // text lead is a scout (groq/cloudflare); vision lead is NOT groq scout
+    if (tl && vl) {
+      expect(vl.model_id.includes('llama-4-scout') && vl.platform === 'groq').toBe(false);
+      // image turns should lead with gemini (HEIC-native) or a llama-3.2 vision model
+      expect(['google', 'github', 'nvidia']).toContain(vl.platform);
+    }
+  });
+
+  it('resolveAlias forwards requireVision to the askpusulasi chain', () => {
+    const text = resolveAlias('askpusulasi', false)!.chain;
+    const vision = resolveAlias('askpusulasi', true)!.chain;
+    // different ordering → at least the first element differs when both resolve
+    if (text.length && vision.length) {
+      expect(text[0] === vision[0]).toBe(false);
+    }
+  });
 });
